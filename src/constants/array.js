@@ -1,0 +1,1 @@
+export const MAXIMUM_ALLOWED_VALUE = 200;
