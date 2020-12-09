@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/Lokicoule/sorting-viewer-and-comparator/static/css/main.2851464b.chunk.css",
-    "main.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/main.3ab37cc0.chunk.js",
-    "main.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/main.3ab37cc0.chunk.js.map",
-    "runtime-main.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/runtime-main.381ff65b.js",
-    "runtime-main.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/runtime-main.381ff65b.js.map",
-    "static/js/2.5343062f.chunk.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.5343062f.chunk.js",
-    "static/js/2.5343062f.chunk.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.5343062f.chunk.js.map",
+    "main.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/main.aa5182f7.chunk.js",
+    "main.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/main.aa5182f7.chunk.js.map",
+    "runtime-main.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/runtime-main.a00b455d.js",
+    "runtime-main.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/runtime-main.a00b455d.js.map",
+    "static/js/2.197e02be.chunk.js": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.197e02be.chunk.js",
+    "static/js/2.197e02be.chunk.js.map": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.197e02be.chunk.js.map",
     "index.html": "/Lokicoule/sorting-viewer-and-comparator/index.html",
-    "precache-manifest.7cd4a447a7d657db217446a32f5e8756.js": "/Lokicoule/sorting-viewer-and-comparator/precache-manifest.7cd4a447a7d657db217446a32f5e8756.js",
+    "precache-manifest.e8ef359b145f201a2fdee7b78aac0eb3.js": "/Lokicoule/sorting-viewer-and-comparator/precache-manifest.e8ef359b145f201a2fdee7b78aac0eb3.js",
     "service-worker.js": "/Lokicoule/sorting-viewer-and-comparator/service-worker.js",
     "static/css/main.2851464b.chunk.css.map": "/Lokicoule/sorting-viewer-and-comparator/static/css/main.2851464b.chunk.css.map",
-    "static/js/2.5343062f.chunk.js.LICENSE.txt": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.5343062f.chunk.js.LICENSE.txt"
+    "static/js/2.197e02be.chunk.js.LICENSE.txt": "/Lokicoule/sorting-viewer-and-comparator/static/js/2.197e02be.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.381ff65b.js",
-    "static/js/2.5343062f.chunk.js",
+    "static/js/runtime-main.a00b455d.js",
+    "static/js/2.197e02be.chunk.js",
     "static/css/main.2851464b.chunk.css",
-    "static/js/main.3ab37cc0.chunk.js"
+    "static/js/main.aa5182f7.chunk.js"
   ]
 }

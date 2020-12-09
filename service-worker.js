@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Lokicoule/sorting-viewer-and-comparator/precache-manifest.7cd4a447a7d657db217446a32f5e8756.js"
+  "/Lokicoule/sorting-viewer-and-comparator/precache-manifest.e8ef359b145f201a2fdee7b78aac0eb3.js"
 );
 
 self.addEventListener('message', (event) => {
