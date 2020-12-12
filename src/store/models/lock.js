@@ -24,10 +24,16 @@ const slice = createSlice({
   },
 });
 
-export const {
+const {
   bubbleSortLocked,
   quickSortLocked,
   mergeSortLocked,
   selectionSortLocked,
 } = slice.actions;
+export const locks = {
+  bubbleSort: bubbleSortLocked,
+  selectionSort: selectionSortLocked,
+  mergeSort: mergeSortLocked,
+  quickSort: quickSortLocked,
+};
 export default slice.reducer;

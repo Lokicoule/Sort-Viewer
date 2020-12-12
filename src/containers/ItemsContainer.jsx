@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 
 import Items from "../components/main/Playground/Items";
 
-import { getModel } from "../store/selectors/modelSelector";
+import { getAlgorithm } from "../store/selectors/algorithmsSelector";
 
 const mapStateToProps = (state, ownProps) => ({
-  model: getModel(ownProps.modelName)(state),
+  model: getAlgorithm(ownProps.modelName)(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

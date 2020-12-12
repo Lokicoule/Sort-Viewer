@@ -4,7 +4,6 @@ import { INITIAL_ARRAY_SIZE } from "../../constants/components";
 const slice = createSlice({
   name: "referential",
   initialState: {
-    items: [],
     sortedItems: [],
     nbItems: INITIAL_ARRAY_SIZE.size,
   },
@@ -16,10 +15,6 @@ const slice = createSlice({
     setSortedItems: (referential, action) => {
       const { sortedItems } = action.payload;
       referential.sortedItems = sortedItems;
-    },
-    setItems: (referential, action) => {
-      const { items } = action.payload;
-      referential.items = items;
     },
   },
 });

@@ -1,9 +1,14 @@
 import { speedCalculator } from "../../helpers/animationHelper";
 import { sortActionDispatched } from "../actions/sorting";
+import { setExecutionTime, setItem } from "../models/algorithms";
+import { locks } from "../models/lock";
 import { getSpeed } from "../selectors/speedSelector";
 
-function dispatchAction(action, dispatch) {
-  if (action && action.type) dispatch(action);
+function dispatchAction(payload, dispatch) {
+  const { algorithm, item, executionTime, lock } = payload;
+  (item && dispatch(setItem(payload))) ||
+    (executionTime && dispatch(setExecutionTime(payload))) ||
+    dispatch(locks[algorithm](lock));
 }
 
 function dispatchActions(actions, dispatch) {

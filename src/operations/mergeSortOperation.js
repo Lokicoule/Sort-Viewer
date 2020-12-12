@@ -12,36 +12,64 @@ import {
 } from "../helpers/sortHelper";
 import decorator from "../helpers/decorators/sortOperation";
 import { sortActionDispatched } from "../store/actions/sorting";
-import { setExecutionTime, setItem } from "../store/models/mergeSort";
-import { mergeSortLocked } from "../store/models/lock";
 
-export const sortOperation = (array, sortedArray) => (dispatch) => {
-  const wrappedSort = decorator(mergeSort)(setExecutionTime)(mergeSortLocked);
+export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
+  const wrappedSort = decorator(mergeSort)(algorithm);
   dispatch(
     sortActionDispatched({
-      toDispatch: wrappedSort([...array], sortedArray, 0, array.length - 1, []),
+      toDispatch: wrappedSort(
+        [...array],
+        sortedArray,
+        0,
+        array.length - 1,
+        [],
+        algorithm
+      ),
       latencies: 4,
     })
   );
 };
 
-const mergeSort = (array, sortedArray, startIdx, endIdx, toDispatch) => {
+const mergeSort = (
+  array,
+  sortedArray,
+  startIdx,
+  endIdx,
+  toDispatch,
+  algorithm
+) => {
   if (startIdx >= endIdx) return;
 
   const middleIdx = Math.floor((startIdx + endIdx) / 2);
-  mergeSort(array, sortedArray, startIdx, middleIdx, toDispatch);
-  mergeSort(array, sortedArray, middleIdx + 1, endIdx, toDispatch);
+  mergeSort(array, sortedArray, startIdx, middleIdx, toDispatch, algorithm);
+  mergeSort(array, sortedArray, middleIdx + 1, endIdx, toDispatch, algorithm);
 
-  return merge(array, sortedArray, startIdx, middleIdx, endIdx, toDispatch);
+  return merge(
+    array,
+    sortedArray,
+    startIdx,
+    middleIdx,
+    endIdx,
+    toDispatch,
+    algorithm
+  );
 };
 
-function merge(array, sortedArray, startIdx, middleIdx, endIdx, toDispatch) {
+function merge(
+  array,
+  sortedArray,
+  startIdx,
+  middleIdx,
+  endIdx,
+  toDispatch,
+  algorithm
+) {
   let temp = [];
   let accLeft = startIdx;
   let accRight = middleIdx + 1;
   let accTemp = 0;
   toDispatch.push({
-    actions: [...getItemsPartition(array, startIdx, endIdx, setItem)],
+    actions: [...getItemsPartition(array, startIdx, endIdx, algorithm)],
   });
   while (accLeft <= middleIdx && accRight <= endIdx) {
     if (array[accLeft].value <= array[accRight].value) {
@@ -60,24 +88,23 @@ function merge(array, sortedArray, startIdx, middleIdx, endIdx, toDispatch) {
     const j = getIndexById(array, temp[i - startIdx].id);
     toDispatch.push({
       actions: [
-        setItem(setItemMapper(array[i], i, ItemStateColorEnum.CURRENT)),
-        setItem(setItemMapper(array[j], j, ItemStateColorEnum.CURRENT)),
+        setItemMapper(algorithm, array[i], i, ItemStateColorEnum.CURRENT),
+        setItemMapper(algorithm, array[j], j, ItemStateColorEnum.CURRENT),
       ],
     });
     if (i !== j) {
-      toDispatch.push(...swap(array, i, j, setItem));
+      toDispatch.push(...swap(array, i, j, algorithm));
       toDispatch.push({
-        actions: [...swappersReleased(array, sortedArray, i, j, setItem)],
+        actions: [...swappersReleased(array, sortedArray, i, j, algorithm)],
       });
     } else {
       toDispatch.push({
         actions: [
-          setItem(
-            cursorReleasedMapper(
-              array,
-              j,
-              itemIsSorted(sortedArray, array[j], j)
-            )
+          cursorReleasedMapper(
+            algorithm,
+            array,
+            j,
+            itemIsSorted(sortedArray, array[j], j)
           ),
         ],
       });

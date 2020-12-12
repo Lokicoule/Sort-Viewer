@@ -3,7 +3,7 @@ import * as selectionSort from "../operations/selectionSortOperation";
 import * as mergeSort from "../operations/mergeSortOperation";
 import * as quickSort from "../operations/quickSortOperation";
 
-import { getModelItems } from "../store/selectors/modelSelector";
+import { getAlgorithmItems } from "../store/selectors/algorithmsSelector";
 
 const operations = {
   bubbleSort: bubbleSort.sortOperation,
@@ -14,6 +14,6 @@ const operations = {
 
 export const sortOperation = (algorithm, sortedArray) =>
   function (dispatch, getState) {
-    const items = getModelItems(algorithm)(getState());
-    dispatch(operations[algorithm](items, sortedArray));
+    const items = getAlgorithmItems(algorithm)(getState());
+    dispatch(operations[algorithm](items, sortedArray, algorithm));
   };

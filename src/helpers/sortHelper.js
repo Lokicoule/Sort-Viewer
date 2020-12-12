@@ -19,42 +19,46 @@ export function generateRandomArray(length, max) {
   return array;
 }
 
-export function swap(array, leftElementIdx, rightElementIdx, action) {
+export function swap(array, leftElementIdx, rightElementIdx, algorithm) {
   const updateSwappers = (state) => [
-    action(setItemMapper(array[leftElementIdx], leftElementIdx, state)),
-    action(setItemMapper(array[rightElementIdx], rightElementIdx, state)),
+    setItemMapper(algorithm, array[leftElementIdx], leftElementIdx, state),
+    setItemMapper(algorithm, array[rightElementIdx], rightElementIdx, state),
   ];
 
   let toDispatch = [];
   toDispatch.push({
     actions: [...updateSwappers(ItemStateColorEnum.SWAPPER)],
-    waiting: true,
   });
   arrayUtils.swap(array, leftElementIdx, rightElementIdx);
   toDispatch.push({
     actions: [...updateSwappers(ItemStateColorEnum.SWAPPED)],
-    waiting: true,
   });
   return toDispatch;
 }
 
-export function getItemsPartition(array, startIdx, endIdx, action) {
+export function getItemsPartition(array, startIdx, endIdx, algorithm) {
   const toDispatch = [];
   for (let i = startIdx; i <= endIdx; i++) {
     toDispatch.push(
-      action(setItemMapper(array[i], i, ItemStateColorEnum.PARTITIONED))
+      setItemMapper(algorithm, array[i], i, ItemStateColorEnum.PARTITIONED)
     );
   }
   return toDispatch;
 }
 
-export function swappersReleased(array, sortedArray, i, j, action) {
+export function swappersReleased(array, sortedArray, i, j, algorithm) {
   return [
-    action(
-      cursorReleasedMapper(array, i, itemIsSorted(sortedArray, array[i], i))
+    cursorReleasedMapper(
+      algorithm,
+      array,
+      i,
+      itemIsSorted(sortedArray, array[i], i)
     ),
-    action(
-      cursorReleasedMapper(array, j, itemIsSorted(sortedArray, array[j], j))
+    cursorReleasedMapper(
+      algorithm,
+      array,
+      j,
+      itemIsSorted(sortedArray, array[j], j)
     ),
   ];
 }

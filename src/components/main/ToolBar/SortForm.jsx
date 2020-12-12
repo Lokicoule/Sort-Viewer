@@ -14,9 +14,9 @@ class SortForm extends Form {
     setSpeed(speed);
   };
 
-  doCheckChange = (change) => {
+  doCheckChange = ({ name, checked }) => {
     const { setAlgorithm } = this.props;
-    setAlgorithm(change);
+    setAlgorithm({ algorithm: name, checked });
   };
 
   doSubmit = () => {
@@ -44,8 +44,8 @@ class SortForm extends Form {
         }}
         onSubmit={this.handleSubmit}
       >
-        {algorithms.map(({ name, label, checked }) =>
-          this.renderCheckBox(name, label, checked)
+        {algorithms.map(({ algorithm, label, checked }) =>
+          this.renderCheckBox(algorithm, label, checked)
         )}
         {this.renderSlider(sliderProps)}
         {this.renderButton("Sort", locked, "red")}

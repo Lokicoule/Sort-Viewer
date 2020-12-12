@@ -1,4 +1,3 @@
-import { setExecutionTime, setItem } from "../store/models/selectionSort";
 import { sortActionDispatched } from "../store/actions/sorting";
 import decorator from "../helpers/decorators/sortOperation";
 import { ItemStateColorEnum } from "../constants/item";
@@ -8,71 +7,74 @@ import {
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
-import { selectionSortLocked } from "../store/models/lock";
 
-export const sortOperation = (array, sortedArray) => (dispatch) => {
-  const wrappedSort = decorator(selectionSort)(setExecutionTime)(
-    selectionSortLocked
-  );
+export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
+  const wrappedSort = decorator(selectionSort)(algorithm);
   dispatch(
     sortActionDispatched({
-      toDispatch: wrappedSort([...array], sortedArray),
+      toDispatch: wrappedSort([...array], sortedArray, algorithm),
       latencies: 5,
     })
   );
 };
 
-function selectionSort(array, sortedArray) {
+function selectionSort(array, sortedArray, algorithm) {
   let toDispatch = [];
   for (let i = 0; i < array.length; i++) {
-    partition(i, toDispatch, array, sortedArray);
+    partition(i, toDispatch, array, sortedArray, algorithm);
     toDispatch.push({
-      actions: [setItem(setItemMapper(array[i], i, ItemStateColorEnum.SORTED))],
+      actions: [
+        setItemMapper(algorithm, array[i], i, ItemStateColorEnum.SORTED),
+      ],
     });
   }
   return toDispatch;
 }
 
-function partition(lastUnsortedIdx, toDispatch, array, sortedArray) {
+function partition(lastUnsortedIdx, toDispatch, array, sortedArray, algorithm) {
   const nbElements = array.length;
   let minIdx = lastUnsortedIdx;
 
   for (let i = lastUnsortedIdx; i < nbElements; i++) {
     toDispatch.push({
-      actions: [setItem(cursorMapper(array, i))],
+      actions: [cursorMapper(algorithm, array, i)],
     });
     if (array[i].value < array[minIdx].value) {
       toDispatch.push({
         actions: [
-          setItem(
-            cursorReleasedMapper(
-              array,
-              minIdx,
-              itemIsSorted(sortedArray, array[minIdx], minIdx)
-            )
+          cursorReleasedMapper(
+            algorithm,
+            array,
+            minIdx,
+            itemIsSorted(sortedArray, array[minIdx], minIdx)
           ),
-          setItem(getMinItemAction(array, i)),
+          getMinItemAction(array, i, algorithm),
         ],
       });
       minIdx = i;
     }
     toDispatch.push({
-      actions: [getReleaseCursorAction(i, minIdx, array, sortedArray)],
+      actions: [
+        getReleaseCursorAction(i, minIdx, array, sortedArray, algorithm),
+      ],
     });
   }
-  toDispatch.push(...swap(array, lastUnsortedIdx, minIdx, setItem));
+  toDispatch.push(...swap(array, lastUnsortedIdx, minIdx, algorithm));
 }
 
-function getMinItemAction(array, i) {
-  return setItemMapper(array[i], i, ItemStateColorEnum.PIVOT);
+function getMinItemAction(array, i, algorithm) {
+  return setItemMapper(algorithm, array[i], i, ItemStateColorEnum.PIVOT);
 }
 
-function getReleaseCursorAction(i, minIdx, array, sortedArray) {
+function getReleaseCursorAction(i, minIdx, array, sortedArray, algorithm) {
   return (
     (i !== minIdx &&
-      setItem(
-        cursorReleasedMapper(array, i, itemIsSorted(sortedArray, array[i], i))
+      cursorReleasedMapper(
+        algorithm,
+        array,
+        i,
+        itemIsSorted(sortedArray, array[i], i)
       )) ||
-    setItem(setItemMapper(array[i], i, ItemStateColorEnum.PIVOT))
+    setItemMapper(algorithm, array[i], i, ItemStateColorEnum.PIVOT)
   );
 }

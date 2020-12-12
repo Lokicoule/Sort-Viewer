@@ -17,5 +17,5 @@ https://lokicoule.github.io/Sort-Viewer/
 
 ## Improvements
 
-- [] Merge models (BS, SS, MS, QS) into algorithms.
+- [x] Merge models (BS, SS, MS, QS) into algorithms.
 - [] Use Webpack

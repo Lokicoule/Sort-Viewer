@@ -1,4 +1,3 @@
-import { setExecutionTime, setItem } from "../store/models/bubbleSort";
 import { sortActionDispatched } from "../store/actions/sorting";
 import { ItemStateColorEnum } from "../constants/item";
 import { swap, itemIsSorted } from "../helpers/sortHelper";
@@ -8,32 +7,36 @@ import {
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
-import { bubbleSortLocked } from "../store/models/lock";
 
-export const sortOperation = (array, sortedArray) => (dispatch) => {
-  const wrappedSort = decorator(bubbleSort)(setExecutionTime)(bubbleSortLocked);
+export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
+  const wrappedSort = decorator(bubbleSort)(algorithm);
   dispatch(
     sortActionDispatched({
-      toDispatch: wrappedSort([...array], sortedArray),
+      toDispatch: wrappedSort([...array], sortedArray, algorithm),
       latencies: 4,
     })
   );
 };
 
-function bubbleSort(array, sortedArray) {
+function bubbleSort(array, sortedArray, algorithm) {
   let lastUnsortedIdx = array.length - 1;
   let toDispatch = [];
   let sorted = false;
   while (!sorted) {
-    sorted = partition(array, sortedArray, lastUnsortedIdx, toDispatch);
+    sorted = partition(
+      array,
+      sortedArray,
+      lastUnsortedIdx,
+      toDispatch,
+      algorithm
+    );
     toDispatch.push({
       actions: [
-        setItem(
-          setItemMapper(
-            array[lastUnsortedIdx],
-            lastUnsortedIdx--,
-            ItemStateColorEnum.SORTED
-          )
+        setItemMapper(
+          algorithm,
+          array[lastUnsortedIdx],
+          lastUnsortedIdx--,
+          ItemStateColorEnum.SORTED
         ),
       ],
     });
@@ -42,21 +45,24 @@ function bubbleSort(array, sortedArray) {
   return toDispatch;
 }
 
-function partition(array, sortedArray, lastUnsortedIdx, toDispatch) {
+function partition(array, sortedArray, lastUnsortedIdx, toDispatch, algorithm) {
   let sorted = true;
 
   for (let i = 0; i < lastUnsortedIdx; i++) {
     toDispatch.push({
-      actions: [setItem(cursorMapper(array, i))],
+      actions: [cursorMapper(algorithm, array, i)],
     });
     if (array[i].value > array[i + 1].value) {
-      toDispatch.push(...swap(array, i, i + 1, setItem));
+      toDispatch.push(...swap(array, i, i + 1, algorithm));
       sorted = false;
     }
     toDispatch.push({
       actions: [
-        setItem(
-          cursorReleasedMapper(array, i, itemIsSorted(sortedArray, array[i], i))
+        cursorReleasedMapper(
+          algorithm,
+          array,
+          i,
+          itemIsSorted(sortedArray, array[i], i)
         ),
       ],
     });
