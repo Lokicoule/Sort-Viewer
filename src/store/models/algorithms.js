@@ -15,6 +15,12 @@ const slice = createSlice({
       items: [],
       executionTime: null,
     },
+    heapSort: {
+      checked: true,
+      label: "HeapSort",
+      items: [],
+      executionTime: null,
+    },
     mergeSort: {
       checked: true,
       label: "MergeSort",
@@ -31,7 +37,6 @@ const slice = createSlice({
   reducers: {
     setAlgorithm: (algorithms, action) => {
       const { algorithm, checked } = action.payload;
-      console.log(algorithm);
       algorithms[algorithm].checked = checked;
     },
     setItem: (algorithms, action) => {

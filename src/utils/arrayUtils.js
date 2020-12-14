@@ -1,6 +1,8 @@
-export async function swap(array, leftElementIdx, rightElementIdx) {
-  [array[leftElementIdx], array[rightElementIdx]] = [
-    array[rightElementIdx],
-    array[leftElementIdx],
-  ];
+export default class ArrayUtils {
+  static swap(array, leftElementIdx, rightElementIdx) {
+    [array[leftElementIdx], array[rightElementIdx]] = [
+      array[rightElementIdx],
+      array[leftElementIdx],
+    ];
+  }
 }

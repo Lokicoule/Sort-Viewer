@@ -12,8 +12,8 @@ https://lokicoule.github.io/Sort-Viewer/
 - [x] SelectionSort.
 - [x] MergeSort.
 - [x] QuickSort.
-- [] HeapSort.
-- [x] Middleware to dispatch actions items update action.
+- [x] HeapSort.
+- [x] Middleware to dispatch actions.
 
 ## Improvements
 

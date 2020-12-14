@@ -1,4 +1,4 @@
-import { speedCalculator } from "../../helpers/animationHelper";
+import SpeedHelper from "../../helpers/SpeedHelper";
 import { sortActionDispatched } from "../actions/sorting";
 import { setExecutionTime, setItem } from "../models/algorithms";
 import { locks } from "../models/lock";
@@ -12,7 +12,7 @@ function dispatchAction(payload, dispatch) {
 }
 
 function dispatchActions(actions, dispatch) {
-  if (!actions.length) return;
+  if (!actions || !actions.length) return;
   dispatchAction(actions[0], dispatch);
   actions.shift();
   dispatchActions(actions, dispatch);
@@ -21,7 +21,7 @@ function dispatchActions(actions, dispatch) {
 function handleDispatch(toDispatch, { dispatch, getState }, latencies) {
   if (!toDispatch.length) return;
   const { actions } = toDispatch[0];
-  const speed = speedCalculator(getSpeed(getState()), latencies);
+  const speed = SpeedHelper.speedCalculator(getSpeed(getState()), latencies);
 
   dispatchActions(actions, dispatch);
 

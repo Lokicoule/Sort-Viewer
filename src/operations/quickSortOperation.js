@@ -5,13 +5,10 @@ import {
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
-import {
-  getItemsPartition,
-  itemIsSorted,
-  swap,
-  swappersReleased,
-} from "../helpers/sortHelper";
+
 import { ItemStateColorEnum } from "../constants/item";
+import SortHelper from "../helpers/SortHelper";
+import OperationHelper from "../helpers/OperationHelper";
 
 export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
   const wrappedSort = decorator(quickSort)(algorithm);
@@ -57,7 +54,7 @@ function partition(array, sortedArray, left, right, toDispatch, algorithm) {
     j = right;
   toDispatch.push({
     actions: [
-      ...getItemsPartition(array, left, right, algorithm),
+      ...OperationHelper.getItemsPartition(array, left, right, algorithm),
       setItemMapper(algorithm, pivot, pivotIndex, ItemStateColorEnum.PIVOT),
     ],
     waiting: true,
@@ -73,7 +70,7 @@ function partition(array, sortedArray, left, right, toDispatch, algorithm) {
             algorithm,
             array,
             i,
-            itemIsSorted(sortedArray, array[i], i)
+            SortHelper.itemIsSorted(sortedArray, array[i], i)
           ),
         ],
       });
@@ -89,16 +86,24 @@ function partition(array, sortedArray, left, right, toDispatch, algorithm) {
             algorithm,
             array,
             j,
-            itemIsSorted(sortedArray, array[j], j)
+            SortHelper.itemIsSorted(sortedArray, array[j], j)
           ),
         ],
       });
       j--;
     }
     if (i <= j) {
-      toDispatch.push(...swap(array, i, j, algorithm));
+      toDispatch.push(...OperationHelper.swap(array, i, j, algorithm));
       toDispatch.push({
-        actions: [...swappersReleased(array, sortedArray, i, j, algorithm)],
+        actions: [
+          ...OperationHelper.swappersReleased(
+            array,
+            sortedArray,
+            i,
+            j,
+            algorithm
+          ),
+        ],
       });
       i++;
       j--;

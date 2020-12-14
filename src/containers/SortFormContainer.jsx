@@ -2,8 +2,6 @@ import { connect } from "react-redux";
 
 import SortForm from "../components/main/ToolBar/SortForm";
 
-import { speedToPercentage } from "../helpers/animationHelper";
-
 import { sortOperation } from "../operations";
 
 import { getSortedItems } from "../store/selectors/referentialSelector";
@@ -15,6 +13,7 @@ import {
 import { setAlgorithm } from "../store/models/algorithms";
 import { setSpeed } from "../store/models/speed";
 import { isLocked } from "../store/selectors/lockSelector";
+import SpeedHelper from "../helpers/SpeedHelper";
 
 const mapStateToProps = (state) => ({
   sortedItems: getSortedItems(state),
@@ -24,7 +23,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSpeed: (speed) => dispatch(setSpeed(speedToPercentage(speed))),
+  setSpeed: (speed) => dispatch(setSpeed(SpeedHelper.speedToPercentage(speed))),
   setAlgorithm: (algorithm) => dispatch(setAlgorithm(algorithm)),
   submit: (sortedArray, selectedAlgorithms) => {
     selectedAlgorithms.forEach((algorithm) => {

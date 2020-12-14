@@ -1,12 +1,13 @@
 import { sortActionDispatched } from "../store/actions/sorting";
 import decorator from "../helpers/decorators/sortOperation";
 import { ItemStateColorEnum } from "../constants/item";
-import { itemIsSorted, swap } from "../helpers/sortHelper";
 import {
   cursorMapper,
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
+import SortHelper from "../helpers/SortHelper";
+import OperationHelper from "../helpers/OperationHelper";
 
 export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
   const wrappedSort = decorator(selectionSort)(algorithm);
@@ -46,7 +47,7 @@ function partition(lastUnsortedIdx, toDispatch, array, sortedArray, algorithm) {
             algorithm,
             array,
             minIdx,
-            itemIsSorted(sortedArray, array[minIdx], minIdx)
+            SortHelper.itemIsSorted(sortedArray, array[minIdx], minIdx)
           ),
           getMinItemAction(array, i, algorithm),
         ],
@@ -59,7 +60,9 @@ function partition(lastUnsortedIdx, toDispatch, array, sortedArray, algorithm) {
       ],
     });
   }
-  toDispatch.push(...swap(array, lastUnsortedIdx, minIdx, algorithm));
+  toDispatch.push(
+    ...OperationHelper.swap(array, lastUnsortedIdx, minIdx, algorithm)
+  );
 }
 
 function getMinItemAction(array, i, algorithm) {
@@ -73,7 +76,7 @@ function getReleaseCursorAction(i, minIdx, array, sortedArray, algorithm) {
         algorithm,
         array,
         i,
-        itemIsSorted(sortedArray, array[i], i)
+        SortHelper.itemIsSorted(sortedArray, array[i], i)
       )) ||
     setItemMapper(algorithm, array[i], i, ItemStateColorEnum.PIVOT)
   );

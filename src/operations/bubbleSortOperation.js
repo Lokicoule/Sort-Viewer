@@ -1,12 +1,13 @@
 import { sortActionDispatched } from "../store/actions/sorting";
 import { ItemStateColorEnum } from "../constants/item";
-import { swap, itemIsSorted } from "../helpers/sortHelper";
 import decorator from "../helpers/decorators/sortOperation";
 import {
   cursorMapper,
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
+import OperationHelper from "../helpers/OperationHelper";
+import SortHelper from "../helpers/SortHelper";
 
 export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
   const wrappedSort = decorator(bubbleSort)(algorithm);
@@ -53,7 +54,7 @@ function partition(array, sortedArray, lastUnsortedIdx, toDispatch, algorithm) {
       actions: [cursorMapper(algorithm, array, i)],
     });
     if (array[i].value > array[i + 1].value) {
-      toDispatch.push(...swap(array, i, i + 1, algorithm));
+      toDispatch.push(...OperationHelper.swap(array, i, i + 1, algorithm));
       sorted = false;
     }
     toDispatch.push({
@@ -62,7 +63,7 @@ function partition(array, sortedArray, lastUnsortedIdx, toDispatch, algorithm) {
           algorithm,
           array,
           i,
-          itemIsSorted(sortedArray, array[i], i)
+          SortHelper.itemIsSorted(sortedArray, array[i], i)
         ),
       ],
     });

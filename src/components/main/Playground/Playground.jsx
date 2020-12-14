@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import {
-  INFOBAR_PIXELS_HEIGHT,
-  TOOLBAR_PIXELS_HEIGHT,
-} from "../../../constants/components";
+
 import ItemsContainer from "../../../containers/ItemsContainer";
+import PlaygroundHelper from "../../../helpers/components/PlaygroundHelper";
 
 class Playground extends Component {
   componentDidMount() {
@@ -13,31 +11,30 @@ class Playground extends Component {
 
   render() {
     const { nbItems, algorithms, windowDimensions } = this.props;
-    const widthPercentage = algorithms.length > 1 ? 50 : 100;
-    const nbInfoBar = algorithms.length > 2 ? 2 : 1;
-    const marginPerItem = algorithms.length > 2 ? 2 : 1;
-    const totalMargin = nbItems * marginPerItem;
-    const containerHeight =
-      windowDimensions.height -
-      TOOLBAR_PIXELS_HEIGHT -
-      INFOBAR_PIXELS_HEIGHT * nbInfoBar -
-      totalMargin;
-    const height = containerHeight / totalMargin;
+    const widthPercentage = PlaygroundHelper.useCasePercentageWidth(
+      algorithms.length
+    );
+    const { height, fontSize } = PlaygroundHelper.useCaseHeightAndFontSize(
+      algorithms.length,
+      nbItems,
+      windowDimensions.height
+    );
     return (
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         {algorithms &&
-          algorithms.map((algorithm) => (
+          algorithms.map((algorithm, i) => (
             <ItemsContainer
               key={algorithm}
               modelName={algorithm}
               width={widthPercentage}
               height={height}
-              fontSize={height / 2}
+              fontSize={fontSize}
             ></ItemsContainer>
           ))}
       </div>

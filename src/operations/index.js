@@ -2,6 +2,7 @@ import * as bubbleSort from "../operations/bubbleSortOperation";
 import * as selectionSort from "../operations/selectionSortOperation";
 import * as mergeSort from "../operations/mergeSortOperation";
 import * as quickSort from "../operations/quickSortOperation";
+import * as heapSort from "../operations/heapSortOperation";
 
 import { getAlgorithmItems } from "../store/selectors/algorithmsSelector";
 
@@ -10,6 +11,7 @@ const operations = {
   selectionSort: selectionSort.sortOperation,
   mergeSort: mergeSort.sortOperation,
   quickSort: quickSort.sortOperation,
+  heapSort: heapSort.sortOperation,
 };
 
 export const sortOperation = (algorithm, sortedArray) =>

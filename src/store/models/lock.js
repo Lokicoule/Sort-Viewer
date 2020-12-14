@@ -21,6 +21,9 @@ const slice = createSlice({
     selectionSortLocked: (lock, { payload }) => {
       lock.selectionSort = payload;
     },
+    heapSortLocked: (lock, { payload }) => {
+      lock.heapSort = payload;
+    },
   },
 });
 
@@ -29,11 +32,13 @@ const {
   quickSortLocked,
   mergeSortLocked,
   selectionSortLocked,
+  heapSortLocked,
 } = slice.actions;
 export const locks = {
   bubbleSort: bubbleSortLocked,
   selectionSort: selectionSortLocked,
   mergeSort: mergeSortLocked,
   quickSort: quickSortLocked,
+  heapSort: heapSortLocked,
 };
 export default slice.reducer;

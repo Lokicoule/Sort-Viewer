@@ -3,15 +3,11 @@ import {
   cursorReleasedMapper,
   setItemMapper,
 } from "../helpers/mappers/payloadMapper";
-import {
-  getIndexById,
-  getItemsPartition,
-  itemIsSorted,
-  swap,
-  swappersReleased,
-} from "../helpers/sortHelper";
+
 import decorator from "../helpers/decorators/sortOperation";
 import { sortActionDispatched } from "../store/actions/sorting";
+import OperationHelper from "../helpers/OperationHelper";
+import SortHelper from "../helpers/SortHelper";
 
 export const sortOperation = (array, sortedArray, algorithm) => (dispatch) => {
   const wrappedSort = decorator(mergeSort)(algorithm);
@@ -69,7 +65,9 @@ function merge(
   let accRight = middleIdx + 1;
   let accTemp = 0;
   toDispatch.push({
-    actions: [...getItemsPartition(array, startIdx, endIdx, algorithm)],
+    actions: [
+      ...OperationHelper.getItemsPartition(array, startIdx, endIdx, algorithm),
+    ],
   });
   while (accLeft <= middleIdx && accRight <= endIdx) {
     if (array[accLeft].value <= array[accRight].value) {
@@ -85,7 +83,7 @@ function merge(
     temp[accTemp++] = array[accRight++];
   }
   for (let i = startIdx; i <= endIdx; i++) {
-    const j = getIndexById(array, temp[i - startIdx].id);
+    const j = SortHelper.getIndexById(array, temp[i - startIdx].id);
     toDispatch.push({
       actions: [
         setItemMapper(algorithm, array[i], i, ItemStateColorEnum.CURRENT),
@@ -93,9 +91,17 @@ function merge(
       ],
     });
     if (i !== j) {
-      toDispatch.push(...swap(array, i, j, algorithm));
+      toDispatch.push(...OperationHelper.swap(array, i, j, algorithm));
       toDispatch.push({
-        actions: [...swappersReleased(array, sortedArray, i, j, algorithm)],
+        actions: [
+          ...OperationHelper.swappersReleased(
+            array,
+            sortedArray,
+            i,
+            j,
+            algorithm
+          ),
+        ],
       });
     } else {
       toDispatch.push({
@@ -104,7 +110,7 @@ function merge(
             algorithm,
             array,
             j,
-            itemIsSorted(sortedArray, array[j], j)
+            SortHelper.itemIsSorted(sortedArray, array[j], j)
           ),
         ],
       });
