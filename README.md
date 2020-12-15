@@ -4,7 +4,7 @@ Why did I do this ? Good question but I have the answer ! Firstly, I wanted to l
 You can access it here :
 https://lokicoule.github.io/Sort-Viewer/
 
----
+![](IHM.gif)
 
 ## Features
 
